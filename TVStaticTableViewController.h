@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 静态表格控制器
- * Dynamically hide rows and sections in static UITableView inside UITableViewController.
- * 参考 https://github.com/k06a/ABStaticTableViewController
  */
 @interface TVStaticTableViewController : UITableViewController
 
