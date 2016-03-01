@@ -10,8 +10,8 @@
 
 @interface TVStaticTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray <NSNumber *> *sectionsPool;
-@property (nonatomic, strong) NSMutableArray <NSIndexPath *> *rowsPool;
+@property (nonatomic, strong) NSMutableIndexSet *hiddenSections;  // NSIndexSet 内部已经排序(+)
+@property (nonatomic, strong) NSMutableArray <NSIndexPath *> *hiddenRows;   // 插入新数据时已经排序(+)
 @property (nonatomic, strong) NSMutableDictionary <NSIndexPath *, NSNumber *> *rowHeightDict;
 @property (nonatomic, strong) NSMutableDictionary <NSNumber *, NSNumber *> *sectionHeaderHeightDict;
 @property (nonatomic, strong) NSMutableDictionary <NSNumber *, NSNumber *> *sectionFooterHeightDict;
@@ -21,32 +21,22 @@
 @implementation TVStaticTableViewController
 
 #pragma mark - Getter/Setter
-- (NSMutableArray *)sectionsPool
+- (NSMutableIndexSet *)hiddenSections
 {
-    if (!_sectionsPool)
+    if (!_hiddenSections)
     {
-        _sectionsPool = [NSMutableArray array];
+        _hiddenSections = [NSMutableIndexSet indexSet];
     }
-    return _sectionsPool;
+    return _hiddenSections;
 }
 
-- (NSArray *)sortedSectionsPool
+- (NSMutableArray<NSIndexPath *> *)hiddenRows
 {
-    return [self.sectionsPool sortedArrayUsingSelector:@selector(compare:)];
-}
-
-- (NSMutableArray *)rowsPool
-{
-    if (!_rowsPool)
+    if (!_hiddenRows)
     {
-        _rowsPool = [NSMutableArray array];
+        _hiddenRows = [NSMutableArray array];
     }
-    return _rowsPool;
-}
-
-- (NSArray *)sortedRowsPool
-{
-    return [self.rowsPool sortedArrayUsingSelector:@selector(compare:)];
+    return _hiddenRows;
 }
 
 - (NSMutableDictionary<NSIndexPath *,NSNumber *> *)rowHeightDict
@@ -79,112 +69,112 @@
 #pragma mark - Public Interface
 - (void)insertSections:(NSIndexSet *)sections
 {
-    [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        [self.sectionsPool removeObject:@(idx)];
-    }];
+    [self.hiddenSections removeIndexes:sections];
 }
 
 - (void)deleteSections:(NSIndexSet *)sections
 {
-    [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
-        NSNumber *section = @(idx);
-        if (![self.sectionsPool containsObject:section])
-        {
-            [self.sectionsPool addObject:section];
-        }
-    }];
+    [self.hiddenSections addIndexes:sections];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        [self.rowsPool removeObject:obj];
+        [self.hiddenRows removeObject:obj];
     }];
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
     [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (![self.rowsPool containsObject:obj])
+        if (![self isIndexPathHidden:obj])
         {
-            [self.rowsPool addObject:obj];
+            [self.hiddenRows addObject:obj];
         }
     }];
+    
+    self.hiddenRows = [[self.hiddenRows sortedArrayUsingSelector:@selector(compare:)] mutableCopy];
 }
 
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self tv_processSections:sections withRowAnimation:animation handler:^(NSMutableIndexSet *targetSections) {
-        [self insertSections:sections];
+    NSMutableIndexSet *actionSections = [NSMutableIndexSet indexSet];
+    [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([self isSectionHidden:idx])
+        {
+            [actionSections addIndex:idx];
+        }
+    }];
+    
+    [self tv_processSections:actionSections withRowAnimation:animation ignored:NO handler:^(NSIndexSet *targetSections) {
+        [self insertSections:actionSections];
         [self.tableView insertSections:targetSections withRowAnimation:animation];
     }];
 }
 
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self tv_processSections:sections withRowAnimation:animation handler:^(NSMutableIndexSet *targetSections) {
-        
-        [self.sectionsPool enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [targetSections removeIndex:obj.integerValue];
-        }];
-        
-        if (targetSections.count > 0)
-        {
-            [self deleteSections:sections];
-            [self.tableView deleteSections:targetSections withRowAnimation:animation];
-        }
+    NSMutableIndexSet *actionSections = [[NSMutableIndexSet alloc] initWithIndexSet:sections];
+    [actionSections removeIndexes:self.hiddenSections];
+    
+    [self tv_processSections:actionSections withRowAnimation:animation ignored:YES handler:^(NSIndexSet *targetSections) {
+        [self deleteSections:actionSections];
+        [self.tableView deleteSections:targetSections withRowAnimation:animation];
     }];
 }
 
 - (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self tv_processRowsAtIndexPaths:indexPaths withRowAnimation:animation handler:^(NSMutableArray *targetIndexPaths) {
-        [self insertRowsAtIndexPaths:indexPaths];
+    NSMutableArray <NSIndexPath *> *actionIndexPaths = [NSMutableArray arrayWithCapacity:indexPaths.count];
+    [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([self isIndexPathHidden:obj])
+        {
+            [actionIndexPaths addObject:obj];
+        }
+    }];
+    
+    [self tv_processRowsAtIndexPaths:actionIndexPaths withRowAnimation:animation handler:^(NSArray <NSIndexPath *> *targetIndexPaths) {
+        [self insertRowsAtIndexPaths:actionIndexPaths];
         [self.tableView insertRowsAtIndexPaths:targetIndexPaths withRowAnimation:animation];
     }];
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
-    [self tv_processRowsAtIndexPaths:indexPaths withRowAnimation:animation handler:^(NSMutableArray *targetIndexPaths) {
-        
-        [targetIndexPaths removeObjectsInArray:self.rowsPool];
-        
-        if (targetIndexPaths.count > 0)
-        {
-            [self deleteRowsAtIndexPaths:indexPaths];
-            [self.tableView deleteRowsAtIndexPaths:targetIndexPaths withRowAnimation:animation];
-        }
+    NSMutableArray <NSIndexPath *> *actionIndexPaths = [NSMutableArray arrayWithArray:indexPaths];
+    [actionIndexPaths removeObjectsInArray:self.hiddenRows];
+    
+    [self tv_processRowsAtIndexPaths:actionIndexPaths withRowAnimation:animation handler:^(NSArray <NSIndexPath *> *targetIndexPaths) {
+        [self deleteRowsAtIndexPaths:actionIndexPaths];
+        [self.tableView deleteRowsAtIndexPaths:targetIndexPaths withRowAnimation:animation];
     }];
 }
 
-- (void)tv_processRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation handler:(void (^)(NSMutableArray *targetIndexPaths))handler
+- (void)tv_processRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation handler:(void (^)(NSArray <NSIndexPath *> *targetIndexPaths))handler
 {
-    [self.tableView beginUpdates];
-    
-    NSMutableArray *targetIndexPaths = [NSMutableArray array];
-    for (NSIndexPath *item in indexPaths)
+    if (indexPaths.count > 0)
     {
-        [targetIndexPaths addObject:[self recoverIndexPath:item]];
+        [self.tableView beginUpdates];
+        
+        NSArray <NSIndexPath *> *targetIndexPaths = [self recoverIndexPaths:indexPaths];
+        handler(targetIndexPaths);
+        
+        [self.tableView endUpdates];
     }
-    
-    handler(targetIndexPaths);
-    
-    [self.tableView endUpdates];
 }
 
-- (void)tv_processSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation handler:(void (^)(NSMutableIndexSet *targetSections))handler
+// @param ignored 是否忽略计算已经处理过的section
+- (void)tv_processSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation ignored:(BOOL)ignored handler:(void (^)(NSIndexSet *targetSections))handler
 {
-    [self.tableView beginUpdates];
-    
-    NSMutableIndexSet *targetSections = [NSMutableIndexSet indexSet];
-    [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * stop) {
-        [targetSections addIndex:[self recoverSection:idx]];
-    }];
-    
-    handler(targetSections);
-    
-    [self.tableView endUpdates];
+    if (sections.count > 0)
+    {
+        [self.tableView beginUpdates];
+        
+        NSIndexSet *targetSections = [self recoverSections:sections ignored:ignored];
+        handler(targetSections);
+        
+        [self.tableView endUpdates];
+    }
 }
 
 #pragma mark - Height
@@ -266,7 +256,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [super numberOfSectionsInTableView:tableView] - self.sectionsPool.count;
+    return [super numberOfSectionsInTableView:tableView] - self.hiddenSections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -274,7 +264,7 @@
     NSInteger realSection = [self convertSection:section];
     
     NSInteger count = 0;
-    for (NSIndexPath *indexPath in self.rowsPool)
+    for (NSIndexPath *indexPath in self.hiddenRows)
     {
         if (indexPath.section == realSection)
         {
@@ -293,70 +283,123 @@
 #pragma mark - Util Functions
 - (NSInteger)convertSection:(NSInteger)section
 {
-    for (NSNumber *item in [self sortedSectionsPool])
-    {
-        if (item.integerValue <= section)
+    __block NSInteger ret = section;
+    [self.hiddenSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx <= ret)
         {
-            ++section;
+            ++ret;
         }
-    }
-    
-    return section;
+    }];
+    return ret;
 }
 
 - (NSIndexPath *)convertIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    
-    for (NSIndexPath *item in [self sortedRowsPool])
+    NSInteger section = [self convertSection:indexPath.section];
+
+    for (NSIndexPath *item in self.hiddenRows)
     {
-        if (item.section == indexPath.section
+        if (item.section == section
             && item.row <= row)
         {
             ++row;
         }
     }
     
-    return [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+    return [NSIndexPath indexPathForRow:row inSection:section];
 }
 
 - (NSInteger)recoverSection:(NSInteger)section
 {
-    for (NSNumber *item in [self sortedSectionsPool])
-    {
-        if (item.integerValue < section)
-        {
-            --section;
-        }
-    }
+    return [self recoverSection:section ignoredSections:nil];
+}
+
+- (NSIndexSet *)recoverSections:(NSIndexSet *)sections ignored:(BOOL)ignored
+{
+    NSMutableIndexSet *targetSections = [NSMutableIndexSet indexSet];
     
-    return section;
+    [sections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * stop) {
+        NSUInteger section = [self recoverSection:idx ignoredSections:ignored ? nil : targetSections];
+        NSAssert(![targetSections containsIndex:section], @"Unexpected section: %tu", section);
+        [targetSections addIndex:section];
+    }];
+    
+    NSAssert(sections.count == targetSections.count, @"Target sections count error: %@", targetSections);
+    return targetSections;
+}
+
+- (NSInteger)recoverSection:(NSInteger)section ignoredSections:(NSIndexSet *)ignoredSections
+{
+    __block NSInteger ret = section;
+    NSMutableIndexSet *sortedSections = [[NSMutableIndexSet alloc] initWithIndexSet:self.hiddenSections];
+    NSAssert(![ignoredSections containsIndex:section], @"Can't recover section-%tu which contains in ignored sections.", section);
+    
+    [sortedSections removeIndexes:ignoredSections];
+    
+    [sortedSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
+        if (idx < section)
+        {
+            --ret;
+        }
+    }];
+    
+    return ret;
 }
 
 - (NSIndexPath *)recoverIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = indexPath.row;
+    return [self recoverIndexPath:indexPath ignoredIndexPaths:nil];
+}
+
+- (NSArray <NSIndexPath *> *)recoverIndexPaths:(NSArray <NSIndexPath *> *)indexPaths
+{
+    NSArray <NSIndexPath *> *sortedIndexPaths = [indexPaths sortedArrayUsingSelector:@selector(compare:)];
     
-    for (NSIndexPath *item in [self sortedRowsPool])
+    NSMutableArray <NSIndexPath *> *targetIndexPaths = [NSMutableArray array];
+    for (NSIndexPath *item in sortedIndexPaths)
     {
-        if (item.section == indexPath.section
-            && item.row < row)
+        NSIndexPath *targetIndexPath = [self recoverIndexPath:item ignoredIndexPaths:targetIndexPaths];
+        [targetIndexPaths addObject:targetIndexPath];
+    }
+    
+    return targetIndexPaths;
+}
+
+- (NSIndexPath *)recoverIndexPath:(NSIndexPath *)indexPath ignoredIndexPaths:(NSArray <NSIndexPath *> *)ignoredIndexPaths
+{
+    __block NSInteger row = indexPath.row;
+    NSInteger section = [self recoverSection:indexPath.section];
+    
+    NSArray <NSIndexPath *> *sortedRows = self.hiddenRows;
+    
+    if (sortedRows.count > 0
+        && ignoredIndexPaths.count > 0)
+    {
+        NSMutableArray <NSIndexPath *> *temp = [NSMutableArray arrayWithArray:sortedRows];
+        [temp removeObjectsInArray:ignoredIndexPaths];
+        sortedRows = temp;
+    }
+    
+    [sortedRows enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (obj.section == indexPath.section
+            && obj.row < indexPath.row)
         {
             --row;
         }
-    }
+    }];
     
-    return [NSIndexPath indexPathForRow:row inSection:indexPath.section];
+    return [NSIndexPath indexPathForRow:row inSection:section];
 }
 
-- (BOOL)isSectionVisible:(NSInteger)section
+- (BOOL)isSectionHidden:(NSInteger)section
 {
-    return ![self.sectionsPool containsObject:@(section)];
+    return [self.hiddenSections containsIndex:section];
 }
 
-- (BOOL)isIndexPathVisible:(NSIndexPath *)indexPath
+- (BOOL)isIndexPathHidden:(NSIndexPath *)indexPath
 {
-    return ![self.rowsPool containsObject:indexPath];
+    return [self.hiddenRows containsObject:indexPath];
 }
 
 @end
