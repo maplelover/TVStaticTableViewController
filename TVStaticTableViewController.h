@@ -12,11 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 静态表格控制器
+ * Dynamically hide rows and sections in static UITableView inside UITableViewController.
+ * 参考 https://github.com/k06a/ABStaticTableViewController
  */
 @interface TVStaticTableViewController : UITableViewController
 
-- (BOOL)isSectionVisible:(NSInteger)section;
-- (BOOL)isIndexPathVisible:(NSIndexPath *)indexPath;
+- (BOOL)isSectionHidden:(NSInteger)section;
+- (BOOL)isIndexPathHidden:(NSIndexPath *)indexPath;
 
 /**
  * 表现层->数据层
@@ -46,7 +48,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 
-/// 设置行高
+/**
+ * 设置行高、Header高度、Footer高度
+ */
 - (void)setRowHeight:(CGFloat)rowHeight forIndexPath:(NSIndexPath *)indexPath;
 - (void)setHeaderHeight:(CGFloat)headerHeight forSection:(NSInteger)section;
 - (void)setFooterHeight:(CGFloat)footerHeight forSection:(NSInteger)section;
