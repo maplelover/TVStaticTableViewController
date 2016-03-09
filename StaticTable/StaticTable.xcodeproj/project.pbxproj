@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		958C4C0B1C8EAA5000989830 /* TestVC1.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C0A1C8EAA5000989830 /* TestVC1.m */; };
+		958C4C0E1C8EAC5400989830 /* BaseSingleSectionTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C0D1C8EAC5400989830 /* BaseSingleSectionTest.m */; };
+		958C4C111C8EAC7F00989830 /* TestVC2.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C101C8EAC7F00989830 /* TestVC2.m */; };
+		958C4C141C8EAD5300989830 /* TestVC3.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C131C8EAD5300989830 /* TestVC3.m */; };
+		958C4C171C8EAEFE00989830 /* MainTestController.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C161C8EAEFE00989830 /* MainTestController.m */; };
+		958C4C1A1C8EB49F00989830 /* TestVC7.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C191C8EB49F00989830 /* TestVC7.m */; };
+		958C4C1D1C8EBBD500989830 /* TestVC13.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C1C1C8EBBD500989830 /* TestVC13.m */; };
+		958C4C201C8ECA1E00989830 /* TestVC14.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C1F1C8ECA1E00989830 /* TestVC14.m */; };
+		958C4C231C8ECC4500989830 /* TestVC15.m in Sources */ = {isa = PBXBuildFile; fileRef = 958C4C221C8ECC4500989830 /* TestVC15.m */; };
+		95A9412D1C8FC15100CAC348 /* BaseWhiteBoxTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A9412C1C8FC15100CAC348 /* BaseWhiteBoxTest.m */; };
+		95A941301C8FC38300CAC348 /* TestVC16.m in Sources */ = {isa = PBXBuildFile; fileRef = 95A9412F1C8FC38300CAC348 /* TestVC16.m */; };
 		95C72FCD1C85520200F0AFEE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C72FCC1C85520200F0AFEE /* main.m */; };
 		95C72FD01C85520200F0AFEE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C72FCF1C85520200F0AFEE /* AppDelegate.m */; };
 		95C72FD31C85520200F0AFEE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C72FD21C85520200F0AFEE /* ViewController.m */; };
@@ -17,6 +28,28 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		958C4C091C8EAA5000989830 /* TestVC1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC1.h; sourceTree = "<group>"; };
+		958C4C0A1C8EAA5000989830 /* TestVC1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC1.m; sourceTree = "<group>"; };
+		958C4C0C1C8EAC5400989830 /* BaseSingleSectionTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSingleSectionTest.h; sourceTree = "<group>"; };
+		958C4C0D1C8EAC5400989830 /* BaseSingleSectionTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSingleSectionTest.m; sourceTree = "<group>"; };
+		958C4C0F1C8EAC7F00989830 /* TestVC2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC2.h; sourceTree = "<group>"; };
+		958C4C101C8EAC7F00989830 /* TestVC2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC2.m; sourceTree = "<group>"; };
+		958C4C121C8EAD5300989830 /* TestVC3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC3.h; sourceTree = "<group>"; };
+		958C4C131C8EAD5300989830 /* TestVC3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC3.m; sourceTree = "<group>"; };
+		958C4C151C8EAEFE00989830 /* MainTestController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTestController.h; sourceTree = "<group>"; };
+		958C4C161C8EAEFE00989830 /* MainTestController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTestController.m; sourceTree = "<group>"; };
+		958C4C181C8EB49F00989830 /* TestVC7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC7.h; sourceTree = "<group>"; };
+		958C4C191C8EB49F00989830 /* TestVC7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC7.m; sourceTree = "<group>"; };
+		958C4C1B1C8EBBD500989830 /* TestVC13.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC13.h; sourceTree = "<group>"; };
+		958C4C1C1C8EBBD500989830 /* TestVC13.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC13.m; sourceTree = "<group>"; };
+		958C4C1E1C8ECA1E00989830 /* TestVC14.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC14.h; sourceTree = "<group>"; };
+		958C4C1F1C8ECA1E00989830 /* TestVC14.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC14.m; sourceTree = "<group>"; };
+		958C4C211C8ECC4500989830 /* TestVC15.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC15.h; sourceTree = "<group>"; };
+		958C4C221C8ECC4500989830 /* TestVC15.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC15.m; sourceTree = "<group>"; };
+		95A9412B1C8FC15100CAC348 /* BaseWhiteBoxTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseWhiteBoxTest.h; sourceTree = "<group>"; };
+		95A9412C1C8FC15100CAC348 /* BaseWhiteBoxTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseWhiteBoxTest.m; sourceTree = "<group>"; };
+		95A9412E1C8FC38300CAC348 /* TestVC16.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestVC16.h; sourceTree = "<group>"; };
+		95A9412F1C8FC38300CAC348 /* TestVC16.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestVC16.m; sourceTree = "<group>"; };
 		95C72FC81C85520200F0AFEE /* StaticTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StaticTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95C72FCC1C85520200F0AFEE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		95C72FCE1C85520200F0AFEE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -42,6 +75,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		958C4C071C8EAA1F00989830 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				958C4C151C8EAEFE00989830 /* MainTestController.h */,
+				958C4C161C8EAEFE00989830 /* MainTestController.m */,
+				958C4C0C1C8EAC5400989830 /* BaseSingleSectionTest.h */,
+				958C4C0D1C8EAC5400989830 /* BaseSingleSectionTest.m */,
+				95A9412B1C8FC15100CAC348 /* BaseWhiteBoxTest.h */,
+				95A9412C1C8FC15100CAC348 /* BaseWhiteBoxTest.m */,
+				958C4C091C8EAA5000989830 /* TestVC1.h */,
+				958C4C0A1C8EAA5000989830 /* TestVC1.m */,
+				958C4C0F1C8EAC7F00989830 /* TestVC2.h */,
+				958C4C101C8EAC7F00989830 /* TestVC2.m */,
+				958C4C121C8EAD5300989830 /* TestVC3.h */,
+				958C4C131C8EAD5300989830 /* TestVC3.m */,
+				958C4C181C8EB49F00989830 /* TestVC7.h */,
+				958C4C191C8EB49F00989830 /* TestVC7.m */,
+				958C4C1B1C8EBBD500989830 /* TestVC13.h */,
+				958C4C1C1C8EBBD500989830 /* TestVC13.m */,
+				958C4C1E1C8ECA1E00989830 /* TestVC14.h */,
+				958C4C1F1C8ECA1E00989830 /* TestVC14.m */,
+				958C4C211C8ECC4500989830 /* TestVC15.h */,
+				958C4C221C8ECC4500989830 /* TestVC15.m */,
+				95A9412E1C8FC38300CAC348 /* TestVC16.h */,
+				95A9412F1C8FC38300CAC348 /* TestVC16.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		958C4C081C8EAA2700989830 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				95C72FE21C85522C00F0AFEE /* TVStaticTableViewController.h */,
+				95C72FE31C85522C00F0AFEE /* TVStaticTableViewController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		95C72FBF1C85520200F0AFEE = {
 			isa = PBXGroup;
 			children = (
@@ -61,16 +132,11 @@
 		95C72FCA1C85520200F0AFEE /* StaticTable */ = {
 			isa = PBXGroup;
 			children = (
-				95C72FE21C85522C00F0AFEE /* TVStaticTableViewController.h */,
-				95C72FE31C85522C00F0AFEE /* TVStaticTableViewController.m */,
-				95C72FCE1C85520200F0AFEE /* AppDelegate.h */,
-				95C72FCF1C85520200F0AFEE /* AppDelegate.m */,
+				958C4C081C8EAA2700989830 /* Classes */,
+				958C4C071C8EAA1F00989830 /* Tests */,
 				95C72FD11C85520200F0AFEE /* ViewController.h */,
 				95C72FD21C85520200F0AFEE /* ViewController.m */,
 				95C72FD41C85520200F0AFEE /* Main.storyboard */,
-				95C72FD71C85520200F0AFEE /* Assets.xcassets */,
-				95C72FD91C85520200F0AFEE /* LaunchScreen.storyboard */,
-				95C72FDC1C85520200F0AFEE /* Info.plist */,
 				95C72FCB1C85520200F0AFEE /* Supporting Files */,
 			);
 			path = StaticTable;
@@ -79,6 +145,11 @@
 		95C72FCB1C85520200F0AFEE /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				95C72FCE1C85520200F0AFEE /* AppDelegate.h */,
+				95C72FCF1C85520200F0AFEE /* AppDelegate.m */,
+				95C72FD71C85520200F0AFEE /* Assets.xcassets */,
+				95C72FD91C85520200F0AFEE /* LaunchScreen.storyboard */,
+				95C72FDC1C85520200F0AFEE /* Info.plist */,
 				95C72FCC1C85520200F0AFEE /* main.m */,
 			);
 			name = "Supporting Files";
@@ -154,10 +225,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				958C4C1A1C8EB49F00989830 /* TestVC7.m in Sources */,
+				958C4C141C8EAD5300989830 /* TestVC3.m in Sources */,
 				95C72FD31C85520200F0AFEE /* ViewController.m in Sources */,
+				958C4C201C8ECA1E00989830 /* TestVC14.m in Sources */,
 				95C72FE41C85522C00F0AFEE /* TVStaticTableViewController.m in Sources */,
+				958C4C0E1C8EAC5400989830 /* BaseSingleSectionTest.m in Sources */,
+				958C4C231C8ECC4500989830 /* TestVC15.m in Sources */,
+				95A941301C8FC38300CAC348 /* TestVC16.m in Sources */,
 				95C72FD01C85520200F0AFEE /* AppDelegate.m in Sources */,
+				95A9412D1C8FC15100CAC348 /* BaseWhiteBoxTest.m in Sources */,
+				958C4C0B1C8EAA5000989830 /* TestVC1.m in Sources */,
+				958C4C111C8EAC7F00989830 /* TestVC2.m in Sources */,
+				958C4C171C8EAEFE00989830 /* MainTestController.m in Sources */,
 				95C72FCD1C85520200F0AFEE /* main.m in Sources */,
+				958C4C1D1C8EBBD500989830 /* TestVC13.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +388,7 @@
 				95C72FE11C85520200F0AFEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
